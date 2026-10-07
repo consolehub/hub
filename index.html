@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07080d" />
+  <link rel="icon" href="./logo.png" />
+  <title>ConsoleHUB</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body class="mode-menu">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <div id="app" class="app" data-view="menu">
+    <div id="dashboardView" class="view dashboard-view menu-view">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><img src="./logo.png" alt="" class="brand-logo" /></span>
+          <h1>ConsoleHUB</h1>
+          <span id="brand-count" class="brand-tag">Consolas retro</span>
+        </div>
+        <div class="topbar-actions">
+          <div class="language-picker">
+            <button id="languageBtn" class="btn btn-ghost" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Cambiar idioma">ES <span aria-hidden="true">⌄</span></button>
+            <div id="languageMenu" class="language-menu" hidden>
+              <button type="button" data-language="es" lang="es">Español</button>
+              <button type="button" data-language="en" lang="en">English</button>
+            </div>
+          </div>
+          <button id="settingsBtn" class="btn btn-ghost" type="button" aria-haspopup="dialog"><span aria-hidden="true">⚙</span> <span>Ajustes</span></button>
+        </div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar" aria-label="Consolas">
+          <div class="sidebar-title">Consolas</div>
+          <nav id="system-list" class="system-list" role="listbox" aria-label="Elige una consola"></nav>
+        </aside>
+        <main id="main" class="main" tabindex="-1">
+          <section class="system-panel" aria-live="polite">
+            <div class="panel-head">
+              <div>
+                <div class="eyebrow" id="system-eyebrow">Elige una consola</div>
+                <h2 id="system-title">—</h2>
+                <p id="system-desc" class="muted">Selecciona una consola para ver sus juegos.</p>
+              </div>
+              <div id="system-badge" class="badges"></div>
+            </div>
+            <div class="upload-zone" id="upload-zone" aria-label="Abrir un archivo de juego">
+              <input id="rom-input" type="file" hidden />
+              <div class="upload-inner">
+                <div id="upload-icon" class="upload-icon" aria-hidden="true">⬒</div>
+                <div class="upload-text">
+                  <strong id="upload-drop">Abre tu archivo de juego</strong>
+                  <span id="upload-browse" class="muted">o arrástralo aquí</span>
+                </div>
+                <div id="upload-accept" class="muted small"></div>
+              </div>
+            </div>
+            <div class="rom-status" id="rom-status" hidden>
+              <div class="rom-status-info"><span class="dot"></span><span id="rom-name" class="rom-name"></span><span id="rom-size" class="muted small"></span></div>
+              <button id="clear-rom" class="btn btn-ghost btn-sm" type="button">Quitar</button>
+            </div>
+            <div class="actions"><button id="launch-btn" class="btn btn-primary btn-lg" type="button" disabled>▶ Jugar archivo</button></div>
+            <div id="error-box" class="error-box" hidden role="alert"></div>
+          </section>
+          <section id="library-panel" class="library-panel" aria-label="Biblioteca de juegos">
+            <div class="panel-head library-head">
+              <div><h3>Juegos disponibles</h3><span id="library-count" class="muted small"></span></div>
+              <label class="library-search-label"><span class="visually-hidden">Buscar juegos</span><input id="library-search" type="search" placeholder="Buscar juego…" autocomplete="off" /></label>
+            </div>
+            <ul id="library-list" class="library-list"></ul>
+            <p id="library-empty" class="muted small" hidden>No se encontraron juegos para esta consola.</p>
+          </section>
+          <section class="recent-panel" aria-label="Juegos recientes">
+            <div class="panel-head"><h3>Recientes</h3><button id="clear-recent" class="btn btn-ghost btn-sm" type="button">Borrar historial</button></div>
+            <ul id="recent-list" class="recent-list"></ul>
+            <p id="recent-empty" class="muted small">Los juegos que abras aparecerán aquí.</p>
+          </section>
+        </main>
+      </div>
+    </div>
+    <section id="playerView" class="view player-view emulator-view" aria-hidden="true">
+      <header class="emu-bar">
+        <button id="back-btn" class="btn btn-ghost" type="button">◀ Volver</button>
+        <div class="emu-title"><span id="emu-system" class="emu-system"></span><span id="emu-game" class="emu-game"></span></div>
+        <div class="emu-actions"><button id="fullscreen-btn" class="btn btn-ghost" type="button">⛶ Pantalla completa</button></div>
+      </header>
+      <div class="emu-stage"><div id="emu-frame-wrap" class="emu-frame-wrap"></div></div>
+    </section>
+  </div>
+  <div id="settingsModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-panel">
+      <header class="modal-head"><h2 id="settings-title">Ajustes</h2><button id="closeSettingsXBtn" class="btn btn-ghost btn-sm" type="button" aria-label="Cerrar">✕</button></header>
+      <div class="modal-body">
+        <label class="field"><span class="field-label">Color de acento</span><input id="setting-accent" type="color" value="#ff3b6b" /></label>
+        <label class="field"><span class="field-label">Volumen</span><input id="setting-volume" type="range" min="0" max="1" step="0.05" value="0.5" /></label>
+        <label class="field field-row"><input id="setting-startonload" type="checkbox" checked /><span>Iniciar al cargar el juego</span></label>
+        <label class="field field-row"><input id="setting-debug" type="checkbox" /><span>Registro detallado del emulador</span></label>
+        <label class="field"><span class="field-label">Ruta de datos del emulador</span><input id="setting-datapath" type="url" spellcheck="false" /><span class="muted small">Se necesita conexión para cargar el emulador.</span><span id="setting-path-error" class="error-text" hidden role="alert"></span></label>
+      </div>
+      <footer class="modal-foot"><button id="settings-reset" class="btn btn-ghost" type="button">Restablecer</button><button id="closeSettingsBtn" class="btn btn-primary" type="button">Guardar</button></footer>
+    </div>
+  </div>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
